@@ -1,0 +1,33 @@
+# JetBrains IDEs (WebStorm, IntelliJ)
+.idea/
+
+# Node.js / Nuxt.js
+node_modules/
+.nuxt/
+dist/
+.output/
+.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Rust / Cargo
+# The `target` directory contains all build artifacts.
+target/
+# Cargo.lock should typically be committed for applications, but can be ignored
+# in some workflows. Uncomment the next line if you want to ignore it.
+# Cargo.lock
+
+# WebAssembly
+# Add any specific directories for WASM artifacts if they are not in `target` or `dist`
+# For example:
+# wasm-pack/
+# pkg/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Generic temporary files
+*.tmp
+*.temp
