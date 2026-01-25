@@ -1,0 +1,21 @@
+{
+  "name": "ising-2d-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo for Ising 2D project with web (Nuxt), Rust (ising-core), and Python (validation) components.",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm -F web dev",
+    "build:web": "pnpm -F web build",
+    "test:rust": "pnpm -F ising-core test",
+    "run:validation": "pnpm -F validation start",
+    "install:all": "pnpm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "apps/web",
+    "crates/ising-core",
+    "tools/validation"
+  ]
+}
