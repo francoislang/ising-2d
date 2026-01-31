@@ -4,5 +4,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
-  ]
+  ],
+  nitro: {
+    compatibilityDate: '2026-01-31'
+  }
 })
