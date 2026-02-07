@@ -1,28 +1,89 @@
 <script setup lang="ts">
   import { ref, computed, onUnmounted } from 'vue';
 
-  const props = defineProps<{
-    modelValue: number;
-    min?: number;
-    max?: number;
-    step?: number;
-    label?: string;
-  }>();
+  const props = withDefaults(
+    defineProps<{
+      modelValue: number;
+      min?: number;
+      max?: number;
+      step?: number;
+      label?: string;
+      place?: string;
+      size?: string;
+    }>(),
+    {
+      place: 'top',
+      size: 'xs',
+    },
+  );
 
-  const emit = defineEmits<{
-    'update:modelValue': [value: number];
-  }>();
+  const isDragging = ref(false);
+  const sliderContainer = ref<HTMLElement | null>(null);
 
   const min = computed(() => props.min ?? 0);
   const max = computed(() => props.max ?? 100);
   const step = computed(() => props.step ?? 1);
 
-  const isDragging = ref(false);
-  const sliderContainer = ref<HTMLElement | null>(null);
-
   const percentage = computed(() => {
     return ((props.modelValue - min.value) / (max.value - min.value)) * 100;
   });
+
+  const placeTitleClass = computed(() => {
+    if (!props.place) return;
+
+    switch (props.place) {
+      case 'top':
+        return 'flex-col';
+      case 'bottom':
+        return 'flex-col-reverse';
+      case 'left':
+        return 'flex-row';
+      case 'right':
+        return 'flex-row-reverse';
+    }
+  });
+
+  const sizeConfig = computed(() => {
+    switch (props.size) {
+      case 'xs':
+        return {
+          text: 'text-xs',
+          track: 'h-1',
+          handle: 'w-3 h-3',
+          valueOffset: '-top-4',
+          container: 'h-6',
+        };
+      case 'md':
+        return {
+          text: 'text-base',
+          track: 'h-2',
+          handle: 'w-5 h-5',
+          valueOffset: '-top-6',
+          container: 'h-8',
+        };
+      case 'lg':
+        return {
+          text: 'text-lg',
+          track: 'h-3',
+          handle: 'w-6 h-6',
+          valueOffset: '-top-7',
+          container: 'h-10',
+        };
+      case 'sm':
+      default:
+        return {
+          text: 'text-sm',
+          track: 'h-1.5',
+          handle: 'w-4 h-4',
+          valueOffset: '-top-5',
+          container: 'h-7',
+        };
+    }
+  });
+
+  const emit = defineEmits<{
+    'update:modelValue': [value: number];
+  }>();
 
   const updateSlider = (event: MouseEvent) => {
     if (!sliderContainer.value) return;
@@ -68,27 +129,38 @@
 </script>
 
 <template>
-  <div class="w-full max-w-sm">
-    <label class="text-gray-700">
+  <div class="w-full flex gap-1" :class="[placeTitleClass, sizeConfig.maxWidth]">
+    <label v-if="label" class="text-gray-700 block" :class="sizeConfig.text">
       {{ label }}
     </label>
     <div
       ref="sliderContainer"
-      class="relative w-full h-8 flex items-center cursor-pointer select-none touch-none"
+      class="relative w-full flex items-center cursor-pointer select-none touch-none"
+      :class="sizeConfig.container"
       @mousedown.prevent="handleMouseDown"
     >
-      <div class="w-full h-2 bg-purple-100 rounded-full" />
+      <div class="w-full bg-purple-100 rounded-full" :class="sizeConfig.track" />
       <div
-        class="absolute top-1/2 -translate-y-1/2 left-0 h-2 bg-purple-400 rounded-l-full"
+        class="absolute top-1/2 -translate-y-1/2 left-0 bg-purple-400 rounded-l-full"
+        :class="sizeConfig.track"
         :style="{ width: percentage + '%' }"
       />
 
+      <!-- Valeur affichée au-dessus du curseur -->
       <div
-        class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center"
+        class="absolute -translate-x-1/2 text-gray-700 font-medium"
+        :class="[sizeConfig.text, sizeConfig.valueOffset]"
         :style="{ left: percentage + '%' }"
       >
-        <div class="bg-gray-900 w-1 h-full rounded-full" />
+        {{ modelValue }}
       </div>
+
+      <!-- Curseur -->
+      <div
+        class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 rounded-full"
+        :class="sizeConfig.handle"
+        :style="{ left: percentage + '%' }"
+      />
     </div>
   </div>
 </template>

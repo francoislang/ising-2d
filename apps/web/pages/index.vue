@@ -9,7 +9,15 @@
 <template>
   <div>
     <div>
-      <InputRange v-model="network_length" :min="8" :max="256" :step="8" label="Taille réseau" />
+      <InputRange
+        v-model="network_length"
+        :min="8"
+        :max="256"
+        :step="8"
+        place="left"
+        label="Taille réseau"
+        size="lg"
+      />
     </div>
   </div>
 </template>
