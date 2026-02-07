@@ -91,6 +91,10 @@
     value = Math.round(value / step.value) * step.value;
     value = Math.max(min.value, Math.min(max.value, value));
 
+    // Corriger les erreurs de précision flottante
+    const decimals = (step.value.toString().split('.')[1] || '').length;
+    value = Number(value.toFixed(decimals));
+
     emit('update:modelValue', value);
   };
 
@@ -125,7 +129,7 @@
     @mouseover="isHovering = true"
     @mouseout="isHovering = false"
   >
-    <label v-if="label" class="text-gray-500 text-xs pb-1">
+    <label v-if="label" class="text-secondary text-xs pb-1">
       {{ label }}
     </label>
     <div
@@ -134,9 +138,9 @@
       :class="sizeConfig.container"
       @mousedown.prevent="handleMouseDown"
     >
-      <div class="w-full bg-purple-100 rounded-full" :class="sizeConfig.track" />
+      <div class="w-full bg-primary/10 rounded-full" :class="sizeConfig.track" />
       <div
-        class="absolute top-1/2 -translate-y-1/2 left-0 bg-purple-400 rounded-l-full"
+        class="absolute top-1/2 -translate-y-1/2 left-0 bg-primary rounded-l-full"
         :class="sizeConfig.track"
         :style="{ width: percentage + '%' }"
       />
@@ -144,7 +148,7 @@
       <!-- Valeur affichée au-dessus du curseur -->
       <div
         v-if="isDragging || isHovering"
-        class="absolute -translate-x-1/2 text-gray-500"
+        class="absolute -translate-x-1/2 text-secondary"
         :class="[sizeConfig.text, sizeConfig.valueOffset]"
         :style="{ left: percentage + '%' }"
       >
@@ -153,7 +157,7 @@
 
       <!-- Curseur -->
       <div
-        class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-500 rounded-sm"
+        class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 bg-foreground rounded-sm"
         :class="sizeConfig.handle"
         :style="{ left: percentage + '%' }"
       />

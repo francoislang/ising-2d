@@ -3,7 +3,8 @@
   import InputRange from '~/components/common/input-range.vue';
 
   const isingStore = useIsingStore();
-  const { network_length, temperature, external_field } = storeToRefs(isingStore);
+  const { network_length, temperature, external_field, exchange_interaction, speed, seed } =
+    storeToRefs(isingStore);
 </script>
 
 <template>
@@ -27,5 +28,25 @@
       :step="8"
       size="sm"
     />
+
+    <InputRange
+      v-model="exchange_interaction"
+      label="Constante de couplage"
+      :min="1"
+      :max="2"
+      :step="0.01"
+      size="sm"
+    />
+
+    <InputRange
+      v-model="speed"
+      label="Vitesse de simulation"
+      :min="0"
+      :max="100"
+      :step="1"
+      size="sm"
+    />
+
+    <InputRange v-model="seed" label="Seed" :min="0" :max="10000" :step="1" size="sm" />
   </div>
 </template>
