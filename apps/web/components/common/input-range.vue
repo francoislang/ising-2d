@@ -29,17 +29,15 @@
   });
 
   const placeTitleClass = computed(() => {
-    if (!props.place) return;
-
     switch (props.place) {
       case 'top':
-        return 'flex-col';
+        return 'flex flex-col';
       case 'bottom':
-        return 'flex-col-reverse';
+        return 'flex flex-col-reverse';
       case 'left':
-        return 'flex-row';
+        return 'flex flex-row';
       case 'right':
-        return 'flex-row-reverse';
+        return 'flex flex-row-reverse';
     }
   });
 
@@ -52,6 +50,16 @@
           handle: 'w-3 h-3',
           valueOffset: '-top-4',
           container: 'h-6',
+          minWidth: 'min-w-16',
+        };
+      case 'sm':
+        return {
+          text: 'text-sm',
+          track: 'h-1.5',
+          handle: 'w-4 h-4',
+          valueOffset: '-top-5',
+          container: 'h-7',
+          minWidth: 'min-w-24',
         };
       case 'md':
         return {
@@ -60,6 +68,7 @@
           handle: 'w-5 h-5',
           valueOffset: '-top-6',
           container: 'h-8',
+          minWidth: 'min-w-32',
         };
       case 'lg':
         return {
@@ -68,15 +77,16 @@
           handle: 'w-6 h-6',
           valueOffset: '-top-7',
           container: 'h-10',
+          minWidth: 'min-w-40',
         };
-      case 'sm':
       default:
         return {
-          text: 'text-sm',
-          track: 'h-1.5',
-          handle: 'w-4 h-4',
-          valueOffset: '-top-5',
-          container: 'h-7',
+          text: 'text-base',
+          track: 'h-2',
+          handle: 'w-5 h-5',
+          valueOffset: '-top-6',
+          container: 'h-8',
+          minWidth: 'min-w-32',
         };
     }
   });
@@ -129,14 +139,18 @@
 </script>
 
 <template>
-  <div class="w-full flex gap-1" :class="[placeTitleClass, sizeConfig.maxWidth]">
-    <label v-if="label" class="text-gray-700 block" :class="sizeConfig.text">
+  <div class="w-full flex gap-4 items-center justify-between" :class="[placeTitleClass]">
+    <label
+      v-if="label"
+      class="text-gray-700 block shrink-0 whitespace-nowrap"
+      :class="sizeConfig.text"
+    >
       {{ label }}
     </label>
     <div
       ref="sliderContainer"
-      class="relative w-full flex items-center cursor-pointer select-none touch-none"
-      :class="sizeConfig.container"
+      class="relative flex-1 flex items-center cursor-pointer select-none touch-none"
+      :class="[sizeConfig.container, sizeConfig.minWidth]"
       @mousedown.prevent="handleMouseDown"
     >
       <div class="w-full bg-purple-100 rounded-full" :class="sizeConfig.track" />

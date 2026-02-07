@@ -16,7 +16,7 @@
         :step="8"
         place="left"
         label="Taille réseau"
-        size="lg"
+        size="md"
       />
     </div>
   </div>
