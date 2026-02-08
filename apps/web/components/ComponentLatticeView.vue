@@ -9,7 +9,15 @@
 
   const canvasRef = ref<HTMLCanvasElement | null>(null);
 
-  onMounted(() => {
+  watch(
+    () => isingStore.network_length,
+    () => {
+      nextTick(() => drawGrid());
+    },
+    { immediate: true },
+  );
+
+  const drawGrid = () => {
     const canvas = canvasRef.value;
     if (!canvas) return;
 
@@ -23,7 +31,7 @@
         ctx.fillRect(i * props.pixelSize, j * props.pixelSize, props.pixelSize, props.pixelSize);
       }
     }
-  });
+  };
 </script>
 
 <template>
