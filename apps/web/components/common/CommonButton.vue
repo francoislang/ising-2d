@@ -5,7 +5,7 @@
       size?: 'xs' | 'sm' | 'md' | 'lg';
       disabled?: boolean;
       label?: string;
-      onClick?: () => void;
+      onClick: () => void;
     }>(),
     {
       variant: 'primary',
