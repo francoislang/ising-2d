@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-  import Sidebar from '~/components/sidebar.vue';
+  import ComponentSidebar from '~/components/ComponentSidebar.vue';
 </script>
 
 <template>
   <div class="flex justify-start min-h-screen">
-    <Sidebar class="shrink-0" />
+    <ComponentSidebar class="shrink-0" />
   </div>
 </template>

@@ -8,7 +8,8 @@
       max?: number;
       step?: number;
       label?: string;
-      size?: string;
+      size?: 'xs' | 'sm' | 'md' | 'lg';
+      criticalValue?: string;
     }>(),
     {
       size: 'sm',
@@ -16,7 +17,6 @@
   );
 
   const isDragging = ref(false);
-  const isHovering = ref(false);
   const sliderContainer = ref<HTMLElement | null>(null);
 
   const min = computed(() => props.min ?? 0);
@@ -124,13 +124,9 @@
 </script>
 
 <template>
-  <div
-    class="w-full flex flex-col gap-1"
-    @mouseover="isHovering = true"
-    @mouseout="isHovering = false"
-  >
-    <label v-if="label" class="text-secondary text-xs pb-1">
-      {{ label }}
+  <div class="w-full flex flex-col gap-1">
+    <label v-if="props.label" class="text-secondary text-xs pb-1">
+      {{ props.label }}
     </label>
     <div
       ref="sliderContainer"
@@ -145,16 +141,6 @@
         :style="{ width: percentage + '%' }"
       />
 
-      <!-- Valeur affichée au-dessus du curseur -->
-      <div
-        v-if="isDragging || isHovering"
-        class="absolute -translate-x-1/2 text-secondary text-xs"
-        :class="[sizeConfig.text, sizeConfig.valueOffset]"
-        :style="{ left: percentage + '%' }"
-      >
-        {{ modelValue }}
-      </div>
-
       <!-- Curseur -->
       <div
         class="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 bg-foreground rounded-sm"
@@ -162,5 +148,13 @@
         :style="{ left: percentage + '%' }"
       />
     </div>
+    <div class="flex justify-between text-xs items-center text-secondary mt-1">
+      <span>{{ props.min }}</span>
+      <span class="px-4 py-2 bg-background rounded-full">
+        {{ props.modelValue }}
+      </span>
+      <span>{{ props.max }}</span>
+    </div>
+    <div v-if="props.criticalValue">{{ props.criticalValue }}</div>
   </div>
 </template>

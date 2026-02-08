@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { IIsingStoreState, InitModeType } from '~/types/ising-store.type';
+import type { IIsingStoreState, InitModeType } from '~/types/isingStore.type';
 
 export const useIsingStore = defineStore('ising', {
   state: (): IIsingStoreState => ({
@@ -28,7 +28,8 @@ export const useIsingStore = defineStore('ising', {
     //   // const response = await fetch('your-api-endpoint');
     //   // this.data = await response.json();
     // },
-    initMode(mode: InitModeType) {
+    setInitMode(mode: InitModeType) {
+      this.initMode = mode;
       console.log('mode choisi', mode);
     },
     start(run: boolean) {
@@ -37,8 +38,8 @@ export const useIsingStore = defineStore('ising', {
     stop(run: boolean) {
       console.log('stop', run);
     },
-    reset(data: Partial<IIsingStoreState>) {
-      console.log('reset', data);
+    reset() {
+      console.log('reset');
     },
     step(number: number) {
       console.log('step', number);

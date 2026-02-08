@@ -3,12 +3,13 @@ export default {
     extend: {
       colors: {
         // Ice & Frost - Élégant glacé
-        background: '#f8fafc',
-        card: '#e0f2fe',
-        primary: '#0ea5e9',
-        secondary: '#38bdf8',
-        foreground: '#0f172a',
+        background: '#ffffff',
+        card: '#f0fdfa',
+        primary: '#0891b2',
+        secondary: '#06b6d4',
+        tertiary: '#8b5cf6',
+        foreground: '#134e4a',
       },
     },
   },
-}
+};
