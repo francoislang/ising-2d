@@ -1,6 +1,6 @@
 <script setup lang="ts">
   const props = defineProps<{
-    title: string;
+    title?: string;
   }>();
 </script>
 
@@ -9,9 +9,6 @@
     <span class="text-xl font-bold text-primary">
       {{ props.title }}
     </span>
-
-    <div>
-      <slot name="content" />
-    </div>
+    <slot name="content" />
   </div>
 </template>

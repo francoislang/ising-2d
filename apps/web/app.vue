@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center">
+  <div class="min-h-screen bg-background">
     <NuxtPage />
   </div>
 </template>

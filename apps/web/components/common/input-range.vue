@@ -148,7 +148,7 @@
       <!-- Valeur affichée au-dessus du curseur -->
       <div
         v-if="isDragging || isHovering"
-        class="absolute -translate-x-1/2 text-secondary"
+        class="absolute -translate-x-1/2 text-secondary text-xs"
         :class="[sizeConfig.text, sizeConfig.valueOffset]"
         :style="{ left: percentage + '%' }"
       >
