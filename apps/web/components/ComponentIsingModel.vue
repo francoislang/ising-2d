@@ -1,5 +1,36 @@
 <script setup lang="ts">
   import ComponentLatticeView from '~/components/ComponentLatticeView.vue';
+  import CommonCard from '~/components/common/CommonCard.vue';
+  import CommonGraphPanel from '~/components/common/CommonGraphPanel.vue';
+
+  const time = ref(0);
+  const arrayTime = ref<number[]>([]);
+  const arrayEnergy = ref<number[]>([]);
+  const arrayAimantation = ref<number[]>([]);
+
+  let intervalId: ReturnType<typeof setInterval> | null = null;
+
+  const calcul = (t: number) => {
+    const energy = t * t + t + 1;
+
+    const aimantation = 4 * t * t * t + 3 * t * t + 2 * t + 1;
+
+    arrayTime.value.push(t);
+    arrayEnergy.value.push(energy);
+    arrayAimantation.value.push(aimantation);
+  };
+
+  onMounted(() => {
+    intervalId = setInterval(() => {
+      time.value++;
+    }, 1000);
+  });
+
+  onUnmounted(() => {
+    if (intervalId) clearInterval(intervalId);
+  });
+
+  watch(time, (newTime) => calcul(newTime), { immediate: true });
 </script>
 
 <template>
@@ -18,7 +49,34 @@
         <span class="text-xs">En attente</span>
       </div>
     </div>
-    <div class="p-4 justify-center items-center flex gap-4">
+    <div class="flex flex-col gap-8 p-4 justify-center items-center">
+      <div class="flex w-full justify-around items-center">
+        <CommonCard title="Énergie du système">
+          <template #content>
+            <CommonGraphPanel
+              :x-axis="arrayTime"
+              :y-axis="arrayEnergy"
+              label="Énergie du système"
+              curve-color="#0891b2"
+              :width="400"
+              :height="400"
+            />
+          </template>
+        </CommonCard>
+
+        <CommonCard title="Aimantation">
+          <template #content>
+            <CommonGraphPanel
+              :x-axis="arrayTime"
+              :y-axis="arrayAimantation"
+              label="Aimantation"
+              curve-color="#0891b2"
+              :width="400"
+              :height="400"
+            />
+          </template>
+        </CommonCard>
+      </div>
       <CommonCard title="Grille de spins" subtitle="Bleu spin +1 | cyan spin -1" class="w-96">
         <template #content>
           <ComponentLatticeView :pixelSize="4" />
