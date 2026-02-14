@@ -21,8 +21,8 @@
     class="fixed top-0 left-0 flex flex-col h-screen w-72 bg-card border-r-2 border-foreground/10"
   >
     <div class="flex border-b-2 gap-2 items-center border-foreground/10 p-4">
-      <div class="p-4 bg-background rounded-xl">
-        <Atom class="h-6 w-6 text-primary" />
+      <div class="p-4 bg-gradient-to-r from-primary to-tertiary text-background rounded-xl">
+        <Atom class="h-6 w-6 text-background" />
       </div>
       <div class="flex flex-col gap-1">
         <h1 class="text-foreground font-bold">Ising 2D model</h1>
