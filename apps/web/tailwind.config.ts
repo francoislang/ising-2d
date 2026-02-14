@@ -2,13 +2,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Ice & Frost - Élégant glacé
-        background: '#ffffff',
-        card: '#f0fdfa',
-        primary: '#0891b2',
-        secondary: '#06b6d4',
-        tertiary: '#8b5cf6',
-        foreground: '#134e4a',
+        // Academic / Laboratory (Light Theme)
+        background: '#ffffff', // Pure White
+        card: '#f8fafc',       // Slate 50 (Subtle contrast)
+        primary: '#2563eb',    // Blue 600 (Spin Up / Cold)
+        secondary: '#dc2626',  // Red 600 (Spin Down / Hot)
+        tertiary: '#7c3aed',   // Violet 600 (Complex data)
+        foreground: '#0f172a', // Slate 900 (Ink)
       },
     },
   },

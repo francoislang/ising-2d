@@ -26,7 +26,8 @@
 
     for (let i = 0; i < isingStore.network_length; i++) {
       for (let j = 0; j < isingStore.network_length; j++) {
-        ctx.fillStyle = (i + j) % 2 === 0 ? '#0891b2' : '#f0fdfa';
+        // Primary (Blue) for Spin Up, Secondary (Red) for Spin Down
+        ctx.fillStyle = (i + j) % 2 === 0 ? '#2563eb' : '#dc2626';
 
         ctx.fillRect(i * props.pixelSize, j * props.pixelSize, props.pixelSize, props.pixelSize);
       }
