@@ -2,11 +2,17 @@
   import ComponentLatticeView from '~/components/ComponentLatticeView.vue';
   import CommonCard from '~/components/common/CommonCard.vue';
   import CommonGraphPanel from '~/components/common/CommonGraphPanel.vue';
+  import { storeToRefs } from 'pinia';
+  import { useIsingStore } from '~/stores/ising.store';
+
+  const isingStore = useIsingStore();
+  const { isRunning } = storeToRefs(isingStore);
 
   const time = ref(0);
   const arrayTime = ref<number[]>([]);
   const arrayEnergy = ref<number[]>([]);
   const arrayMagnetization = ref<number[]>([]);
+  const status = computed(() => (isRunning.value ? 'En cours' : 'En attente'));
 
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -20,7 +26,22 @@
     arrayMagnetization.value.push(magnetization);
   };
 
+  const statusClass = computed(() => {
+    if (isRunning.value) {
+      return {
+        background: 'border-primary/10 bg-primary/20',
+        dot: 'bg-primary',
+      };
+    } else {
+      return {
+        background: 'border-secondary/10 bg-secondary/20',
+        dot: 'bg-secondary',
+      };
+    }
+  });
+
   onMounted(() => {
+    calcul(0);
     intervalId = setInterval(() => {
       time.value++;
     }, 10);
@@ -30,7 +51,14 @@
     if (intervalId) clearInterval(intervalId);
   });
 
-  watch(time, (newTime) => calcul(newTime), { immediate: true });
+  watch(
+    time,
+    (newTime) => {
+      if (!isRunning.value) return;
+      calcul(newTime);
+    },
+    { immediate: true },
+  );
 </script>
 
 <template>
@@ -43,10 +71,11 @@
         <span class="text-xs italic">Simulation Monte Carlo du modèle Ising 2D</span>
       </div>
       <div
-        class="flex items-center gap-2 border-2 border-primary/10 bg-primary/20 px-4 py-1 rounded-md"
+        class="flex items-center gap-2 border-2 px-4 py-1 rounded-md"
+        :class="statusClass.background"
       >
-        <span class="w-2 h-2 bg-primary rounded-full"></span>
-        <span class="text-xs">En attente</span>
+        <span class="w-2 h-2 rounded-full" :class="statusClass.dot"></span>
+        <span class="text-xs">{{ status }}</span>
       </div>
     </div>
     <div class="flex flex-col gap-8 p-4 justify-center items-center">
