@@ -6,18 +6,18 @@
   const time = ref(0);
   const arrayTime = ref<number[]>([]);
   const arrayEnergy = ref<number[]>([]);
-  const arrayAimantation = ref<number[]>([]);
+  const arrayMagnetization = ref<number[]>([]);
 
   let intervalId: ReturnType<typeof setInterval> | null = null;
 
   const calcul = (t: number) => {
     const energy = t * t + t + 1;
 
-    const aimantation = 4 * t * t * t + 3 * t * t + 2 * t + 1;
+    const magnetization = 4 * t * t * t + 3 * t * t + 2 * t + 1;
 
     arrayTime.value.push(t);
     arrayEnergy.value.push(energy);
-    arrayAimantation.value.push(aimantation);
+    arrayMagnetization.value.push(magnetization);
   };
 
   onMounted(() => {
@@ -68,7 +68,7 @@
           <template #content>
             <CommonGraphPanel
               :x-axis="arrayTime"
-              :y-axis="arrayAimantation"
+              :y-axis="arrayMagnetization"
               label="Aimantation"
               curve-color="#2563eb"
               :width="400"
