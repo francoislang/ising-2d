@@ -26,6 +26,18 @@ export function useSimulation() {
         if (event.data.payload.status === StatusConstant.RUNNING) isingStore.isRunning = true;
         else isingStore.isRunning = false;
       }
+
+      if (event.data.type === MessageConstant.SNAPSHOT) {
+      }
+
+      if (event.data.type === MessageConstant.METRICS) {
+        const { energy, magnetization, stepCount } = event.data.payload;
+        isingStore.updateState({
+          energy,
+          magnetization,
+          stepCount,
+        });
+      }
     };
 
     return {
