@@ -4,7 +4,7 @@ enum ProtocoleVersionConstant {
   V1 = 'v1',
 }
 
-enum MessageConstant {
+export enum MessageConstant {
   INIT = 'init',
   SETPARAMS = 'setParams',
   START = 'start',
@@ -19,7 +19,13 @@ enum MessageConstant {
   ERROR = 'error',
 }
 
-type StatusConstantType = 'idle' | 'running' | 'paused';
+export enum StatusConstant {
+  IDLE = 'idle',
+  RUNNING = 'running',
+  PAUSED = 'paused',
+}
+
+export type StatusConstantType = 'idle' | 'running' | 'paused';
 
 interface IInitPayload {
   network_length: number;
@@ -30,7 +36,7 @@ interface IInitPayload {
   initMode: InitModeType;
 }
 
-// main thread -> worker
+// main thread -> workers
 
 /** Initialise le Worker avec les paramètres de simulation et la version du protocole. */
 export interface IInitMessage {
@@ -89,7 +95,7 @@ export type MainToWorkerMessage =
   | IStepMessage
   | ISetSnapshotRateMessage;
 
-// worker -> main thread
+// workers -> main thread
 
 /** Le Worker a chargé le WASM et est prêt à recevoir des commandes. */
 export interface IReadyMessage {

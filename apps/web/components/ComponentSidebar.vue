@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { storeToRefs } from 'pinia';
+  import { useSimulation } from '~/composables/useSimulation';
   import CommonInputRange from '~/components/common/CommonInputRange.vue';
   import CommonButton from '~/components/common/CommonButton.vue';
   import { Atom, Play, Pause, RotateCcw, StepForward } from 'lucide-vue-next';
@@ -14,6 +15,8 @@
     seed,
     initMode,
   } = storeToRefs(isingStore);
+
+  const simulation = useSimulation();
 </script>
 
 <template>
@@ -87,13 +90,13 @@
     />
 
     <div class="flex flex-col gap-2 px-4">
-      <CommonButton label="Start" variant="gradient" :on-click="() => isingStore.start(true)">
+      <CommonButton label="Start" variant="gradient" :on-click="() => simulation.start()">
         <template #icon>
           <Play class="w-4 h-4 text-background fill-current" />
         </template>
       </CommonButton>
 
-      <CommonButton label="Stop" variant="secondary" :on-click="() => isingStore.stop(true)">
+      <CommonButton label="Stop" variant="secondary" :on-click="() => simulation.pause()">
         <template #icon>
           <Pause class="w-4 h-4 text-background fill-current" />
         </template>

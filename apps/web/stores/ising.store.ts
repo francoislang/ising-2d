@@ -19,24 +19,9 @@ export const useIsingStore = defineStore('ising', {
     // doubleCount: (state) => state.count * 2,
   },
   actions: {
-    // Define your actions here
-    // For example:
-    // increment() {
-    //   this.count++;
-    // },
-    // async fetchData() {
-    //   // const response = await fetch('your-api-endpoint');
-    //   // this.data = await response.json();
-    // },
     setInitMode(mode: InitModeType) {
       this.initMode = mode;
       console.log('mode choisi', mode);
-    },
-    start(run: boolean) {
-      console.log('start', run);
-    },
-    stop(run: boolean) {
-      console.log('stop', run);
     },
     reset() {
       console.log('reset');
