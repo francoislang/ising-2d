@@ -12,6 +12,8 @@ export const useIsingStore = defineStore('ising', {
     speed: 0,
     isRunning: false,
     stepCount: 0,
+    energy: 0,
+    magnetization: 0,
   }),
   getters: {
     // Define your getters here
@@ -30,7 +32,7 @@ export const useIsingStore = defineStore('ising', {
       console.log('step', number);
     },
     updateState(data: Partial<IIsingStoreState>) {
-      console.log('updateState', data);
+      Object.assign(this, data);
     },
   },
 });
