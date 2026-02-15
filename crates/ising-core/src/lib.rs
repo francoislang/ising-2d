@@ -1,9 +1,9 @@
-use rand_chacha::ChaCha8Rng;
 use rand_chacha::rand_core::SeedableRng;
+use rand_chacha::ChaCha8Rng;
 
 pub enum InitMode {
     Up,
-    Random
+    Random,
 }
 pub struct IsingModel {
     network_length: usize,
@@ -14,14 +14,21 @@ pub struct IsingModel {
     step_count: usize,
     energy: f64,
     magnetization: f64,
-    rng: ChaCha8Rng
+    rng: ChaCha8Rng,
 }
 
 impl IsingModel {
-    pub fn new(network_length: usize, seed: u64, temperature: f64, exchange_interaction: f64, external_field: f64, init_mode: InitMode) -> Self {
+    pub fn new(
+        network_length: usize,
+        seed: u64,
+        temperature: f64,
+        exchange_interaction: f64,
+        external_field: f64,
+        init_mode: InitMode,
+    ) -> Self {
         let spins = match init_mode {
             InitMode::Up => vec![1i8; network_length * network_length],
-            InitMode::Random => todo!()
+            InitMode::Random => todo!(),
         };
 
         let mut magnetization = 0.0;
@@ -41,9 +48,7 @@ impl IsingModel {
             }
         }
 
-        let energy = - exchange_interaction * interaction_energy - external_field * magnetization;
-
-
+        let energy = -exchange_interaction * interaction_energy - external_field * magnetization;
 
         IsingModel {
             network_length,
@@ -54,7 +59,7 @@ impl IsingModel {
             step_count: 0,
             energy,
             magnetization,
-            rng: ChaCha8Rng::seed_from_u64(seed)
+            rng: ChaCha8Rng::seed_from_u64(seed),
         }
     }
 }
