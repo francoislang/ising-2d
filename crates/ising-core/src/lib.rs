@@ -1,3 +1,4 @@
+use rand::RngExt;
 use rand_chacha::rand_core::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 
@@ -26,9 +27,18 @@ impl IsingModel {
         external_field: f64,
         init_mode: InitMode,
     ) -> Self {
+        let mut rng = ChaCha8Rng::seed_from_u64(seed);
+
         let spins = match init_mode {
             InitMode::Up => vec![1i8; network_length * network_length],
-            InitMode::Random => todo!(),
+            InitMode::Random => {
+                let mut vec = vec![];
+                for _ in 0..network_length * network_length {
+                    let spin = rng.random_range(0..2);
+                    if spin == 0 { vec.push(-1) } else { vec.push(1) }
+                }
+                vec
+            }
         };
 
         let mut magnetization = 0.0;
@@ -39,6 +49,7 @@ impl IsingModel {
 
         let mut interaction_energy = 0.0;
 
+        // modulo car conditions périodiques sur ma grille de spin
         for i in 0..network_length {
             for j in 0..network_length {
                 let site = spins[i * network_length + j] as f64; // penser au fait que spins est un tableau 1D et pas une matrice
