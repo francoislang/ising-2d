@@ -70,7 +70,66 @@ impl IsingModel {
             step_count: 0,
             energy,
             magnetization,
-            rng: ChaCha8Rng::seed_from_u64(seed),
+            rng,
         }
+    }
+
+    pub fn step(&mut self, n: usize) {
+        for _ in 0..n {
+            let random = self
+                .rng
+                .random_range(0..self.network_length * self.network_length);
+
+            let random_spin = self.spins[random] as f64;
+            let row = random / self.network_length;
+            let column = random % self.network_length;
+            let right_spin =
+                self.spins[row * self.network_length + (column + 1) % self.network_length] as f64;
+            let left_spin = self.spins[row * self.network_length
+                + (column + self.network_length - 1) % self.network_length]
+                as f64;
+            let bottom_spin =
+                self.spins[((row + 1) % self.network_length) * self.network_length + column] as f64;
+            let top_spin = self.spins[((row + self.network_length - 1) % self.network_length)
+                * self.network_length
+                + column] as f64;
+
+            let energy_variation = -2.0
+                * random_spin
+                * (self.exchange_interaction * (right_spin + left_spin + top_spin + bottom_spin)
+                    + self.external_field);
+
+            if energy_variation <= 0.0 {
+                self.spins[random] = -self.spins[random];
+                self.energy += energy_variation;
+                self.magnetization += -2.0 * random_spin;
+            } else {
+                let proba = self.rng.random_range(0.0..1.0);
+                let proba_boltzmann = (-energy_variation / self.temperature).exp();
+                // il faut que la proba soit inférieur à boltzmann car le système physique ne veut pas augmenter son énergie
+                if proba < proba_boltzmann {
+                    self.spins[random] = -self.spins[random];
+                    self.energy += energy_variation;
+                    self.magnetization += -2.0 * random_spin;
+                }
+            }
+            self.step_count += 1;
+        }
+    }
+
+    pub fn energy(&self) -> f64 {
+        self.energy
+    }
+
+    pub fn magnetization(&self) -> f64 {
+        self.magnetization
+    }
+
+    pub fn step_count(&self) -> usize {
+        self.step_count
+    }
+
+    pub fn spins(&self) -> &[i8] {
+        &self.spins
     }
 }
