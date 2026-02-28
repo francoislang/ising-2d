@@ -2,10 +2,13 @@ use rand::RngExt;
 use rand_chacha::rand_core::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 
+/// Represents 2 init modes for the Ising model
 pub enum InitMode {
     Up,
     Random,
 }
+
+/// Represents the 2D Ising model simulation
 pub struct IsingModel {
     network_length: usize,
     spins: Vec<i8>,
@@ -19,6 +22,7 @@ pub struct IsingModel {
 }
 
 impl IsingModel {
+    /// Create a new Ising model with the given parameters
     pub fn new(
         network_length: usize,
         seed: u64,
@@ -74,6 +78,7 @@ impl IsingModel {
         }
     }
 
+    /// Perform a single step of the simulation
     pub fn step(&mut self, n: usize) {
         for _ in 0..n {
             let random = self
@@ -117,19 +122,44 @@ impl IsingModel {
         }
     }
 
+    /// Get the current energy of the system
     pub fn energy(&self) -> f64 {
         self.energy
     }
 
+    /// Get the current magnetization of the system
     pub fn magnetization(&self) -> f64 {
         self.magnetization
     }
 
+    /// Get the number of steps performed so far
     pub fn step_count(&self) -> usize {
         self.step_count
     }
 
+    /// Get the spins of the system
     pub fn spins(&self) -> &[i8] {
         &self.spins
     }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn new_ising_model() {}
+
+    #[test]
+    fn step() {}
+
+    #[test]
+    fn energy() {}
+
+    #[test]
+    fn magnetization() {}
+
+    #[test]
+    fn step_count() {}
+
+    #[test]
+    fn spins() {}
 }
