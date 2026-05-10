@@ -1,19 +1,27 @@
 pub struct PRNG {
-    seed: u64,
+    state: u64,
 }
 
 impl PRNG {
-    pub fn new(seed: u64) -> Self {
-        Self { seed }
+    pub fn new(mut seed: u64) -> Self {
+        if seed == 0 {
+            seed = 1;
+        }
+        Self { state: seed }
     }
 
     pub fn random(&mut self) -> u64 {
-        if self.seed == 0 {
-            self.seed = 1;
-        }
-        self.seed ^= self.seed << 13;
-        self.seed ^= self.seed >> 7;
-        self.seed ^= self.seed << 17;
-        self.seed
+        self.state ^= self.state << 13;
+        self.state ^= self.state >> 7;
+        self.state ^= self.state << 17;
+        self.state
+    }
+
+    pub fn random_range(&mut self, max: u64) -> usize {
+        (self.random() % max) as usize
+    }
+
+    pub fn random_float(&mut self) -> f64 {
+        (self.random() >> 11) as f64 / (1u64 << 53) as f64
     }
 }

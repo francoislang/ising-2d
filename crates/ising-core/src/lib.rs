@@ -1,7 +1,4 @@
-use rand::RngExt;
-use rand_chacha::rand_core::SeedableRng;
-use rand_chacha::ChaCha8Rng;
-
+mod prng;
 /// Represents 2 init modes for the Ising model
 pub enum InitMode {
     Up,
@@ -18,7 +15,7 @@ pub struct IsingModel {
     step_count: usize,
     energy: f64,
     magnetization: f64,
-    rng: ChaCha8Rng,
+    rng: prng::PRNG,
 }
 
 impl IsingModel {
@@ -31,14 +28,14 @@ impl IsingModel {
         external_field: f64,
         init_mode: InitMode,
     ) -> Self {
-        let mut rng = ChaCha8Rng::seed_from_u64(seed);
+        let mut rng = prng::PRNG::new(seed);
 
         let spins = match init_mode {
             InitMode::Up => vec![1i8; network_length * network_length],
             InitMode::Random => {
                 let mut vec = vec![];
                 for _ in 0..network_length * network_length {
-                    let spin = rng.random_range(0..2);
+                    let spin = rng.random();
                     if spin == 0 { vec.push(-1) } else { vec.push(1) }
                 }
                 vec
@@ -83,7 +80,7 @@ impl IsingModel {
         for _ in 0..n {
             let random = self
                 .rng
-                .random_range(0..self.network_length * self.network_length);
+                .random_range((self.network_length * self.network_length) as u64);
 
             let random_spin = self.spins[random] as f64;
             let row = random / self.network_length;
@@ -109,7 +106,7 @@ impl IsingModel {
                 self.energy += energy_variation;
                 self.magnetization += -2.0 * random_spin;
             } else {
-                let proba = self.rng.random_range(0.0..1.0);
+                let proba = self.rng.random_float();
                 let proba_boltzmann = (-energy_variation / self.temperature).exp();
                 // il faut que la proba soit inférieur à boltzmann car le système physique ne veut pas augmenter son énergie
                 if proba < proba_boltzmann {
