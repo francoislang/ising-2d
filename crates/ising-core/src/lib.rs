@@ -138,6 +138,15 @@ impl IsingModel {
     pub fn spins(&self) -> &[i8] {
         &self.spins
     }
+
+    fn neighbors(&self, row: usize, col: usize) -> [usize; 4]{
+        let right = row * self.network_length + (col + 1) % self.network_length;
+        let left = row * self.network_length + (col + self.network_length - 1) % self.network_length;
+        let top = ((row + self.network_length - 1) % self.network_length) * self.network_length + col;
+        let bottom = ((row + 1) % self.network_length) * self.network_length + col;
+
+        [right, left, top, bottom]
+    }
 }
 
 #[cfg(test)]
@@ -174,5 +183,35 @@ mod tests {
         assert_eq!(model1.step_count(), model2.step_count());
         assert_eq!(model1.spins(), model2.spins());
     }
+
+    #[test]
+    fn neighbors_corner_top_left() {
+        let model = IsingModel::new(3, 1, 1.0, 1.0, 1.0, InitMode::Random);
+        let neighbors = model.neighbors(0, 0);
+        assert_eq!(neighbors[0], 1);
+        assert_eq!(neighbors[1], 2);
+        assert_eq!(neighbors[2], 6);
+        assert_eq!(neighbors[3], 3);
+    }
+
+    #[test]
+    fn neighbors_corner_bottom_right() {
+        let model = IsingModel::new(3, 1, 1.0, 1.0, 1.0, InitMode::Random);
+        let neighbors = model.neighbors(2, 2);
+        assert_eq!(neighbors[0], 6);
+        assert_eq!(neighbors[1], 7);
+        assert_eq!(neighbors[2], 5);
+        assert_eq!(neighbors[3], 2);
+    }
+    #[test]
+    fn neighbors_top_border() {
+        let model = IsingModel::new(3, 1, 1.0, 1.0, 1.0, InitMode::Random);
+        let neighbors = model.neighbors(0, 1);
+        assert_eq!(neighbors[0], 2);
+        assert_eq!(neighbors[1], 0);
+        assert_eq!(neighbors[2], 7);
+        assert_eq!(neighbors[3], 4);
+    }
+
 
 }
