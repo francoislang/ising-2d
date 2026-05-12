@@ -25,3 +25,16 @@ impl PRNG {
         (self.random() >> 11) as f64 / (1u64 << 53) as f64
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::PRNG;
+    #[test]
+    fn deterministic_prng() {
+        let mut random1 = PRNG::new(1);
+        let mut random2 = PRNG::new(1);
+        let vec1 = (0..1000).map(|_| random1.random_range(1000)).collect::<Vec<usize>>();
+        let vec2 = (0..1000).map(|_| random2.random_range(1000)).collect::<Vec<usize>>();
+        assert_eq!(vec1, vec2)
+    }
+}

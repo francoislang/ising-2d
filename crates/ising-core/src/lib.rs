@@ -35,7 +35,7 @@ impl IsingModel {
             InitMode::Random => {
                 let mut vec = vec![];
                 for _ in 0..network_length * network_length {
-                    let spin = rng.random();
+                    let spin = rng.random_range(2); // 0 ou 1
                     if spin == 0 { vec.push(-1) } else { vec.push(1) }
                 }
                 vec
@@ -142,6 +142,8 @@ impl IsingModel {
 
 #[cfg(test)]
 mod tests {
+
+    use super::*;
     #[test]
     fn new_ising_model() {}
 
@@ -159,4 +161,18 @@ mod tests {
 
     #[test]
     fn spins() {}
+
+    #[test]
+    fn replay() {
+        let mut model1 = IsingModel::new(10, 1, 1.0, 1.0, 1.0, InitMode::Random);
+        let mut model2 = IsingModel::new(10, 1, 1.0, 1.0, 1.0, InitMode::Random);
+        model1.step(100);
+        model2.step(100);
+
+        assert_eq!(model1.energy(), model2.energy());
+        assert_eq!(model1.magnetization(), model2.magnetization());
+        assert_eq!(model1.step_count(), model2.step_count());
+        assert_eq!(model1.spins(), model2.spins());
+    }
+
 }
